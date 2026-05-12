@@ -13,15 +13,15 @@ import axios from 'axios';
 
 // Create a reusable axios instance with the backend base URL
 // Determine the API base URL.
-// Priority: VITE_API_URL env var → localhost (dev) → Render production URL
-const getBaseURL = () => {
-  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
-  if (window.location.hostname === 'localhost') return 'http://localhost:5000/api';
-  return 'https://task-flow-9a7v.onrender.com/api';
-};
+// Development : reads VITE_API_URL from .env, falls back to localhost.
+// Production  : always uses the Render backend — no env var needed on Vercel.
+const BASE_URL =
+  window.location.hostname === 'localhost'
+    ? (import.meta.env.VITE_API_URL || 'http://localhost:5000/api')
+    : 'https://task-flow-9a7v.onrender.com/api';
 
 const api = axios.create({
-  baseURL: getBaseURL(),
+  baseURL: BASE_URL,
 
   headers: {
     'Content-Type': 'application/json',
