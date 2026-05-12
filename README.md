@@ -177,3 +177,17 @@ The free tier on Render spins down after 15 minutes of inactivity. The first req
 
 **Two terminal windows required**
 The backend and frontend are separate processes. You must run `npm run dev` in two separate terminal windows — one inside `backend/` and one inside `frontend/`.
+
+---
+
+## AI Contributions
+
+Portions of this project were developed with assistance from an AI coding assistant. AI was used to accelerate the following areas:
+
+- Scaffolding of boilerplate code (Express middleware setup, Mongoose schema, Vite configuration)
+- Generation of unit test cases and in-memory database setup
+- Code review and refactoring suggestions (custom React hook extraction, PropTypes enforcement, MongoDB index design)
+- Drafting of this README
+
+All AI-generated output was reviewed, understood, tested, and integrated by the developer. The architecture decisions, feature design, and deployment configuration were directed by the developer throughout.
+
