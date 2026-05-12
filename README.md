@@ -45,7 +45,12 @@ Open a terminal window and run:
 ```bash
 cd backend
 npm install
+
+# Mac / Linux / Git Bash on Windows:
 cp .env.example .env
+
+# Windows Command Prompt:
+# copy .env.example .env
 ```
 
 Edit `backend/.env` and fill in your values:
@@ -72,7 +77,12 @@ Open a **second** terminal window and run:
 ```bash
 cd frontend
 npm install
+
+# Mac / Linux / Git Bash on Windows:
 cp .env.example .env
+
+# Windows Command Prompt:
+# copy .env.example .env
 ```
 
 Edit `frontend/.env`:
@@ -154,13 +164,7 @@ Environment variables to set on Render:
 
 ### Frontend (Vercel)
 
-Environment variables to set on Vercel:
-
-| Key           | Value                                    |
-|---------------|------------------------------------------|
-| VITE_API_URL  | `https://task-flow-9a7v.onrender.com/api` |
-
-After adding variables, trigger a redeployment for changes to take effect.
+No environment variables are required. The production API URL is resolved automatically at build time based on the hostname.
 
 ---
 
