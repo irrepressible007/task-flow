@@ -12,6 +12,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 function TaskForm({ initialData = null, onSubmit, onCancel }) {
   // ── Form field state ──────────────────────────────────────────────────────
@@ -159,5 +160,21 @@ function TaskForm({ initialData = null, onSubmit, onCancel }) {
     </form>
   );
 }
+
+TaskForm.propTypes = {
+  initialData: PropTypes.shape({
+    title:       PropTypes.string,
+    description: PropTypes.string,
+    priority:    PropTypes.oneOf(['low', 'medium', 'high']),
+    dueDate:     PropTypes.string,
+  }),
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func,
+};
+
+TaskForm.defaultProps = {
+  initialData: null,
+  onCancel:    null,
+};
 
 export default TaskForm;
