@@ -1,80 +1,179 @@
-# 📋 Task-Flow MERN Application
+# Task-Flow — Full-Stack Task Management Application
 
-A robust, full-stack task management application built with the MERN stack (MongoDB, Express, React, Node.js). This project demonstrates modern web development practices including custom hooks, error boundaries, and optimized database queries.
+A full-stack task management application built with the MERN stack (MongoDB, Express, React, Node.js). The project demonstrates RESTful API design, persistent data storage, input validation, and a component-based React frontend.
 
-## 🚀 Quick Start (Local Development)
+## Live Deployment
 
-### 1. Prerequisites
-- Node.js (v16+)
-- MongoDB Atlas account (or local MongoDB)
+| Service  | URL                                          |
+|----------|----------------------------------------------|
+| Frontend | https://task-flow-dun-psi.vercel.app         |
+| Backend  | https://task-flow-9a7v.onrender.com          |
 
-### 2. Setup Backend
-Open a **new terminal window**:
+---
+
+## Technology Stack
+
+| Layer      | Technology                                      |
+|------------|-------------------------------------------------|
+| Frontend   | React 18, Vite, Vanilla CSS                     |
+| Backend    | Node.js, Express 4, express-validator           |
+| Database   | MongoDB Atlas, Mongoose ODM                     |
+| Security   | Helmet, CORS, dotenv                            |
+| Testing    | Jest, Supertest, mongodb-memory-server          |
+| Deployment | Vercel (frontend), Render (backend)             |
+
+---
+
+## Local Development Setup
+
+### Prerequisites
+- Node.js v16 or higher
+- A MongoDB Atlas account (or a local MongoDB instance)
+- Git
+
+### Step 1 — Clone the Repository
+
+```bash
+git clone https://github.com/irrepressible007/task-flow.git
+cd task-flow
+```
+
+### Step 2 — Configure and Start the Backend
+
+Open a terminal window and run:
+
 ```bash
 cd backend
 npm install
 cp .env.example .env
-# Edit .env and add your MONGODB_URI
+```
+
+Edit `backend/.env` and fill in your values:
+
+```
+PORT=5000
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/taskflow
+CLIENT_URL=http://localhost:5173
+NODE_ENV=development
+```
+
+Then start the development server:
+
+```bash
 npm run dev
 ```
 
-### 3. Setup Frontend
-Open a **second terminal window**:
+The API will be available at `http://localhost:5000`.
+
+### Step 3 — Configure and Start the Frontend
+
+Open a **second** terminal window and run:
+
 ```bash
 cd frontend
 npm install
 cp .env.example .env
-# Edit .env if your backend port differs from 5000
+```
+
+Edit `frontend/.env`:
+
+```
+VITE_API_URL=http://localhost:5000/api
+```
+
+Then start the development server:
+
+```bash
 npm run dev
 ```
-The app will be running at `http://localhost:5173`.
+
+The application will be available at `http://localhost:5173`.
 
 ---
 
-## 🛠️ Features
-- **CRUD Operations**: Create, Read, Update, Delete tasks.
-- **Status Toggle**: Quickly mark tasks as Pending or Completed.
-- **Priority & Due Dates**: Sort tasks by importance and track deadlines.
-- **Search & Filter**: Live keyword search and status-based filtering.
-- **Real-time Feedback**: Toast notifications and confirmation modals.
-- **Robust Architecture**: Custom React hooks, Error Boundaries, and MongoDB indexing.
+## API Reference
+
+All endpoints are prefixed with `/api`. Responses use JSON throughout.
+
+| Method | Endpoint               | Description                          | Body                                    |
+|--------|------------------------|--------------------------------------|-----------------------------------------|
+| GET    | /api/tasks             | Return all tasks                     | None                                    |
+| POST   | /api/tasks             | Create a new task                    | `{ title, description? }`              |
+| PUT    | /api/tasks/:id         | Update an existing task              | `{ title?, description?, status? }`    |
+| PATCH  | /api/tasks/:id/toggle  | Toggle status between pending/completed | None                               |
+| DELETE | /api/tasks/:id         | Delete a task                        | None                                    |
 
 ---
 
-## ☁️ Deployment (Vercel)
+## Database Schema
 
-This project is configured for **Vercel Experimental Services** (Monorepo).
+Collection: `tasks`
 
-### Steps:
-1. Connect your GitHub repository to Vercel.
-2. Vercel will detect the `vercel.json` in the root.
-3. **Configure Environment Variables** in the Vercel Dashboard:
-
-**For the Backend Service:**
-- `MONGODB_URI`: Your MongoDB Atlas connection string.
-- `CLIENT_URL`: Your Vercel deployment URL (e.g., `https://task-flow.vercel.app`).
-- `NODE_ENV`: `production`.
-
-**For the Frontend Service:**
-- `VITE_API_URL`: Your Vercel URL + backend prefix (e.g., `https://task-flow.vercel.app/_/backend/api`).
+| Field       | Type     | Notes                              |
+|-------------|----------|------------------------------------|
+| _id         | ObjectId | Auto-generated primary key         |
+| title       | String   | Required, max 255 characters       |
+| description | String   | Optional                           |
+| status      | String   | `pending` or `completed`           |
+| priority    | String   | `low`, `medium`, or `high`         |
+| dueDate     | Date     | Optional                           |
+| createdAt   | Date     | Auto-managed by Mongoose           |
+| updatedAt   | Date     | Auto-managed by Mongoose           |
 
 ---
 
-## 🔍 Troubleshooting
+## Running Tests
 
-### MongoDB Connection Issues
-- **IP Whitelist**: Ensure your current IP (or `0.0.0.0/0` for production) is whitelisted in MongoDB Atlas under **Network Access**.
-- **Credentials**: Double-check your username and password in the `MONGODB_URI`. Special characters must be URL-encoded.
-- **Database Name**: Ensure the database name in the URI is correct (the part after `/` and before `?`).
-
-### Backend 404s
-- If deploying to Vercel, remember that the backend is mounted at `/_/backend/api`. Ensure your `VITE_API_URL` reflects this.
-
----
-
-## 🧪 Testing
-Run backend unit tests:
 ```bash
 cd backend
 npm test
 ```
+
+Six unit tests cover task creation (POST) and retrieval (GET) using an in-memory MongoDB instance. No external database connection is required to run the tests.
+
+---
+
+## Production Deployment
+
+### Backend (Render)
+
+| Setting         | Value            |
+|-----------------|------------------|
+| Root Directory  | `backend`        |
+| Build Command   | `npm install`    |
+| Start Command   | `node server.js` |
+| Runtime         | Node             |
+
+Environment variables to set on Render:
+
+| Key          | Value                          |
+|--------------|--------------------------------|
+| MONGODB_URI  | Your Atlas connection string   |
+| CLIENT_URL   | Your Vercel frontend URL       |
+| NODE_ENV     | `production`                   |
+
+### Frontend (Vercel)
+
+Environment variables to set on Vercel:
+
+| Key           | Value                                    |
+|---------------|------------------------------------------|
+| VITE_API_URL  | `https://task-flow-9a7v.onrender.com/api` |
+
+After adding variables, trigger a redeployment for changes to take effect.
+
+---
+
+## Troubleshooting
+
+**MongoDB connection refused**
+Ensure your IP address (or `0.0.0.0/0` for production) is whitelisted under Network Access in MongoDB Atlas.
+
+**CORS errors in the browser**
+Verify that `CLIENT_URL` on Render is set to the exact origin of your frontend, including the protocol and without a trailing slash.
+
+**Render cold starts**
+The free tier on Render spins down after 15 minutes of inactivity. The first request after idle may take up to 30 seconds to respond. This is expected behaviour for the free plan.
+
+**Two terminal windows required**
+The backend and frontend are separate processes. You must run `npm run dev` in two separate terminal windows — one inside `backend/` and one inside `frontend/`.
